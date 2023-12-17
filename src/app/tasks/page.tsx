@@ -2,6 +2,7 @@ import { InternalLink } from "@/components/InternalLink";
 
 import type { Metadata } from "next/types";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "タスク一覧",
@@ -10,7 +11,13 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main>
-      <h1 className="text-3xl font-bold mb-5">タスク一覧</h1>
+      <Breadcrumbs
+        list={[
+          { name: "トップ", href: "/" },
+          { name: "タスク一覧", href: "/tasks" },
+        ]}
+      />
+      <h1 className="text-3xl font-bold my-5">タスク一覧</h1>
       <Link href="/tasks/create" className="btn btn-primary mb-4">
         タスクの作成
       </Link>
@@ -36,7 +43,7 @@ export default function Page() {
               </label>
             </td>
             <td>
-              <InternalLink href="/tasks/1">タスク1</InternalLink>
+              <InternalLink href="/tasks/edit/1">タスク1</InternalLink>
             </td>
           </tr>
         </tbody>
