@@ -49,6 +49,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
+              example:
+                id: 1
+                title: Task 1
+                description: Description 1
+                done: false
   /tasks/{taskId}:
     get:
       summary: Get a task
@@ -83,7 +88,7 @@ paths:
       tags:
         - "tasks"
       parameters:
-        - name: id
+        - name: taskId
           in: path
           description: ID of task to update
           required: true
@@ -104,6 +109,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Task"
+              example:
+                id: 1
+                title: Task 1
+                description: Description 1
+                done: false
         "404":
           description: Not Found
     delete:
