@@ -7,11 +7,7 @@ export const InternalLink = forwardRef<HTMLAnchorElement, Props>(
   (props, ref) => {
     const { className, ...rest } = props;
     return (
-      <Link
-        ref={ref}
-        {...rest}
-        className={`${className} text-blue-600 underline underline-offset-2`}
-      >
+      <Link ref={ref} {...rest} className={`${className} link`}>
         {props.children}
       </Link>
     );
