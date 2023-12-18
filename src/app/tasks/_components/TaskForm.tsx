@@ -143,6 +143,11 @@ export const TaskForm = (props: Props) => {
           </div>
         </div>
       </div>
+      {errors.root && (
+        <p className="text-red-600" role="alert">
+          {errors.root.message}
+        </p>
+      )}
       <button type="submit" className="btn btn-primary" disabled={isPending}>
         {props.isEdit ? "更新" : "作成"}
         {isPending && (

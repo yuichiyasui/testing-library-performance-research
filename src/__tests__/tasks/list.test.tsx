@@ -1,4 +1,4 @@
-import { renderWithProviders } from "./custom-render";
+import { renderWithProviders } from "../custom-render";
 import TasksPage from "@/app/tasks/page";
 import Layout from "@/app/tasks/layout";
 import { screen, waitFor } from "@testing-library/react";
