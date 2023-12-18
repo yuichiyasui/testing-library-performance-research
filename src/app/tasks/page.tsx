@@ -1,8 +1,7 @@
-import { InternalLink } from "@/components/InternalLink";
-
 import type { Metadata } from "next/types";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { TaskList } from "./_components/TaskList";
 
 export const metadata: Metadata = {
   title: "タスク一覧",
@@ -22,32 +21,7 @@ export default function Page() {
         タスクの作成
       </Link>
 
-      <table className="table">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="whitespace-nowrap w-0">
-              <label>
-                <span className="sr-only">全てのタスクを選択</span>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
-            <th>タスク名</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <label>
-                <span className="sr-only">タスク1を選択</span>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </td>
-            <td>
-              <InternalLink href="/tasks/edit/1">タスク1</InternalLink>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <TaskList />
     </main>
   );
 }
