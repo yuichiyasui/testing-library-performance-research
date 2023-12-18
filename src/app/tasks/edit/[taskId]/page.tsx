@@ -16,7 +16,7 @@ export default function Page({ taskId }: PageParams) {
         ]}
       />
       <h1 className="text-3xl font-bold my-5">タスクの編集</h1>
-      <TaskForm />
+      <TaskForm isEdit taskId={taskId} />
     </main>
   );
 }

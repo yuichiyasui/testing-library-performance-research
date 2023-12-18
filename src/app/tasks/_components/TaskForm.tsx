@@ -1,12 +1,18 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { object, string, maxLength, minLength, type Output } from "valibot";
 import { useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import {
+  useCreateTaskMutation,
+  useGetTaskQuery,
+  useUpdateTaskMutation,
+} from "@/api/__generated__/task-api";
+import { useRouter } from "next/navigation";
 
 const formSchema = object({
-  name: string([
+  title: string([
     minLength(1, "タスク名が入力されていません"),
     maxLength(30, "タスク名は30文字以内で入力してください"),
   ]),
@@ -17,22 +23,73 @@ const formSchema = object({
 
 type FormSchema = Output<typeof formSchema>;
 
-export const TaskForm = () => {
+type Props = { isEdit: true; taskId: string } | { isEdit: false };
+
+export const TaskForm = (props: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    setError,
   } = useForm<FormSchema>({
     resolver: valibotResolver(formSchema),
   });
+  const router = useRouter();
 
-  const onSubmit = (data: FormSchema) => {
-    console.log(data);
+  const { data: initialData } = useGetTaskQuery(
+    { taskId: props.isEdit ? Number(props.taskId) : 0 },
+    {
+      query: {
+        enabled: props.isEdit,
+      },
+    },
+  );
+
+  useEffect(() => {
+    if (initialData) {
+      setValue("title", initialData.title);
+      setValue("description", initialData.description);
+    }
+  }, [initialData, setValue]);
+
+  const { mutateAsync: createTaskMutation, isPending: isCreatePending } =
+    useCreateTaskMutation();
+  const { mutateAsync: updateTaskMutation, isPending: isUpdatePending } =
+    useUpdateTaskMutation();
+
+  const onSubmit = async (data: FormSchema) => {
+    try {
+      if (props.isEdit) {
+        await updateTaskMutation({
+          pathParams: {
+            taskId: Number(props.taskId),
+          },
+          data: {
+            title: data.title,
+            description: data.description,
+          },
+        });
+      } else {
+        await createTaskMutation({
+          data: {
+            title: data.title,
+            description: data.description,
+          },
+        });
+      }
+
+      router.push("/tasks");
+    } catch (error) {
+      setError("root", { message: "エラーが発生しました" });
+    }
   };
 
+  const isPending = props.isEdit ? isUpdatePending : isCreatePending;
+
   const id = useId();
-  const taskNameId = `task-name-${id}`;
-  const taskNameErrorId = `task-name-error-${id}`;
+  const taskTitleId = `task-title-${id}`;
+  const taskTitleErrorId = `task-title-error-${id}`;
   const taskDescriptionId = `task-description-${id}`;
   const taskDescriptionErrorId = `task-description-error-${id}`;
 
@@ -41,23 +98,23 @@ export const TaskForm = () => {
       <div className="flex flex-col gap-y-4 mb-4">
         <div className="form-control">
           <p className="label">
-            <label htmlFor={taskNameId} className="label-text">
+            <label htmlFor={taskTitleId} className="label-text">
               タスク名
             </label>
           </p>
           <input
-            {...register("name")}
-            id={taskNameId}
+            {...register("title")}
+            id={taskTitleId}
             type="text"
-            aria-invalid={!!errors.name ? "true" : "false"}
+            aria-invalid={!!errors.title ? "true" : "false"}
             aria-required="true"
-            aria-errormessage={taskNameErrorId}
+            aria-errormessage={taskTitleErrorId}
             className="input input-bordered"
           />
           <div className="label">
-            {errors.name && (
-              <p id={taskNameErrorId} className="label-text-alt text-red-600">
-                {errors.name.message}
+            {errors.title && (
+              <p id={taskTitleErrorId} className="label-text-alt text-red-600">
+                {errors.title.message}
               </p>
             )}
           </div>
@@ -86,8 +143,11 @@ export const TaskForm = () => {
           </div>
         </div>
       </div>
-      <button type="submit" className="btn btn-primary">
-        作成
+      <button type="submit" className="btn btn-primary" disabled={isPending}>
+        {props.isEdit ? "更新" : "作成"}
+        {isPending && (
+          <span className="ml-2 loading loading-spinner loading-sm"></span>
+        )}
       </button>
     </form>
   );
