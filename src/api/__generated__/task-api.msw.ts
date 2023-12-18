@@ -7,8 +7,8 @@
 import { HttpResponse, delay, http } from "msw";
 
 export const getGetTasksMock = () => [
-  { id: 1, title: "Task 1", description: "Description 1", done: false },
-  { id: 2, title: "Task 2", description: "Description 2", done: true },
+  { id: 1, title: "タスク1", description: "Description 1", done: false },
+  { id: 2, title: "タスク2", description: "Description 2", done: true },
 ];
 
 export const getCreateTaskMock = () => ({

@@ -23,11 +23,11 @@ paths:
                   $ref: "#/components/schemas/Task"
                 example:
                   - id: 1
-                    title: Task 1
+                    title: タスク1
                     description: Description 1
                     done: false
                   - id: 2
-                    title: Task 2
+                    title: タスク2
                     description: Description 2
                     done: true
     post:
