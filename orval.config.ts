@@ -24,6 +24,7 @@ export default defineConfig({
         mock: {
           baseUrl: "http://localhost:4010",
           useExamples: true,
+          delay: 0,
         },
         useNamedParameters: true,
       },

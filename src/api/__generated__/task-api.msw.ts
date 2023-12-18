@@ -34,7 +34,7 @@ export const getUpdateTaskMock = () => ({
 
 export const getTaskAPIMock = () => [
   http.get("http://localhost:4010/tasks", async () => {
-    await delay(1000);
+    await delay(0);
     return new HttpResponse(JSON.stringify(getGetTasksMock()), {
       status: 200,
       headers: {
@@ -43,7 +43,7 @@ export const getTaskAPIMock = () => [
     });
   }),
   http.post("http://localhost:4010/tasks", async () => {
-    await delay(1000);
+    await delay(0);
     return new HttpResponse(JSON.stringify(getCreateTaskMock()), {
       status: 200,
       headers: {
@@ -52,7 +52,7 @@ export const getTaskAPIMock = () => [
     });
   }),
   http.get("http://localhost:4010/tasks/:taskId", async () => {
-    await delay(1000);
+    await delay(0);
     return new HttpResponse(JSON.stringify(getGetTaskMock()), {
       status: 200,
       headers: {
@@ -61,7 +61,7 @@ export const getTaskAPIMock = () => [
     });
   }),
   http.put("http://localhost:4010/tasks/:taskId", async () => {
-    await delay(1000);
+    await delay(0);
     return new HttpResponse(JSON.stringify(getUpdateTaskMock()), {
       status: 200,
       headers: {
@@ -70,7 +70,7 @@ export const getTaskAPIMock = () => [
     });
   }),
   http.delete("http://localhost:4010/tasks/:taskId", async () => {
-    await delay(1000);
+    await delay(0);
     return new HttpResponse(null, {
       status: 200,
       headers: {
