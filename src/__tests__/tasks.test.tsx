@@ -4,6 +4,8 @@ import Layout from "@/app/tasks/layout";
 import { screen, waitFor } from "@testing-library/react";
 import { setupServer } from "msw/node";
 import { getTaskAPIMock } from "@/api/__generated__/task-api.msw";
+import { HttpResponse, http } from "msw";
+import { env } from "@/constants/env";
 
 const server = setupServer(...getTaskAPIMock());
 
@@ -36,4 +38,26 @@ test("タスク一覧ページが表示されること", async () => {
     expect(screen.getByRole("link", { name: "タスク1" })).toBeInTheDocument();
   });
   expect(screen.getByRole("link", { name: "タスク2" })).toBeInTheDocument();
+});
+
+test("タスクが登録されていない場合一覧を表示しない", async () => {
+  server.use(
+    http.get(`${env.taskApiUrl}/tasks`, () => {
+      return HttpResponse.json([]);
+    }),
+  );
+
+  renderWithProviders(
+    <Layout>
+      <TasksPage />
+    </Layout>,
+  );
+
+  await waitFor(() => {
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+  });
+
+  expect(
+    screen.getByText("登録されているタスクがありません"),
+  ).toBeInTheDocument();
 });

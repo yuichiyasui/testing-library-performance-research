@@ -17,6 +17,7 @@ const config: Config = {
   testEnvironmentOptions: {
     customExportConditions: [""],
   },
+  testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
   setupFiles: ["./jest.polyfills.js"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
