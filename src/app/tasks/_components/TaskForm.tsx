@@ -129,6 +129,7 @@ export const TaskForm = (props: Props) => {
             {...register("description")}
             id={taskDescriptionId}
             aria-invalid={!!errors.description ? "true" : "false"}
+            aria-errormessage={taskDescriptionErrorId}
             className="textarea textarea-bordered"
           ></textarea>
           <div className="label">

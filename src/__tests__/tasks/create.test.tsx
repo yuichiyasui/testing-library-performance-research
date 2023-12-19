@@ -122,14 +122,16 @@ test("各フィールドの入力文字数が上限を超過している場合�
 
   screen.getByRole("button", { name: "作成" }).click();
 
-  const titleError = await screen.findByText(
-    "タスク名は30文字以内で入力してください",
-  );
-  expect(titleError).toBeInTheDocument();
-  const descriptionError = await screen.findByText(
+  await waitFor(() => {
+    expect(titleField).toHaveAccessibleErrorMessage(
+      "タスク名は30文字以内で入力してください",
+    );
+  });
+
+  expect(descriptionField).toHaveAccessibleErrorMessage(
     "タスクの内容は1000文字以内で入力してください",
   );
-  expect(descriptionError).toBeInTheDocument();
+
   expect(createTaskMutationInterceptor).not.toHaveBeenCalled();
 });
 
