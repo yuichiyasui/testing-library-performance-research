@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../custom-render";
 import TaskCreationPage from "@/app/tasks/create/page";
 import Layout from "@/app/tasks/layout";
@@ -115,10 +115,10 @@ test("各フィールドの入力文字数が上限を超過している場合�
   );
 
   const titleField = screen.getByRole("textbox", { name: "タスク名" });
-  await user.type(titleField, "a".repeat(31));
+  fireEvent.change(titleField, { target: { value: "a".repeat(31) } });
 
   const descriptionField = screen.getByRole("textbox", { name: "内容" });
-  await user.type(descriptionField, "a".repeat(1001));
+  fireEvent.change(descriptionField, { target: { value: "a".repeat(1001) } });
 
   screen.getByRole("button", { name: "作成" }).click();
 
