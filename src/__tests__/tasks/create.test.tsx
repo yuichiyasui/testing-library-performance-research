@@ -6,7 +6,7 @@ import { setupServer } from "msw/node";
 import { env } from "@/constants/env";
 import { HttpResponse, http } from "msw";
 
-const createTaskMutationInterceptor = jest.fn();
+const createTaskMutationInterceptor = vi.fn();
 const server = setupServer(
   http.post(`${env.taskApiUrl}/tasks`, ({ request }) => {
     if (request.body === null) {
@@ -27,17 +27,17 @@ const server = setupServer(
 );
 
 const mockRouter = {
-  push: jest.fn(),
+  push: vi.fn(),
 };
 
-jest.mock("next/navigation", () => ({
+vi.mock("next/navigation", () => ({
   useRouter: () => mockRouter,
 }));
 
 beforeAll(() => server.listen());
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
   server.resetHandlers();
 });
 
